@@ -1,38 +1,48 @@
 let inputTask= document.getElementById('add-task-input');
 const addTaskButton =document.getElementById('add-button');
 
-function createList(){
+function createList(taskText){
   const checkbox= document.createElement('input');
+  const savedList= document.createElement('div');
   const saveTaskContainer =document.createElement('div');
   const editButton= document.createElement('button');
   const deleteButton= document.createElement('button');
+  
+  saveTaskContainer.classList.add('saved-tasks');
+  savedList.classList.add('saved-list');
   checkbox.id ='checkbox';
   checkbox.type ='checkbox';
-  saveTaskContainer.id= 'saved-tasks';
   editButton.id='edit-button';
   deleteButton.id='delete-button';
+
   editButton.innerHTML = '<i class="fa-solid fa-pen-to-square"></i>';
   deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
 
+  saveTaskContainer.innerText = taskText;
+  
   deleteButton.addEventListener('click', function(){
-    saveTaskContainer.remove();
+    savedList.remove();
   });
  
   editButton.addEventListener('click', function(){
-    saveTaskContainer.innerText += " "+ prompt('Enter Text: ');
+    let newText=  prompt('Enter Text: ');
+    if(newText){
+    saveTaskContainer.innerText = newText;
+    }
    });
-   
-   saveTaskContainer.appendChild(checkbox);
-   saveTaskContainer.appendChild(editButton);
-   saveTaskContainer.appendChild(deleteButton);
+    
+   savedList.appendChild(checkbox);
+   savedList.appendChild(saveTaskContainer);
+   savedList.appendChild(editButton);
+   savedList.appendChild(deleteButton);
  
-   document.querySelector('.saved-list').appendChild(saveTaskContainer);
+   document.body.appendChild(savedList);
+
 };
 
-addTaskButton.addEventListener('click', function(){
-  createList();
-  const inputTask = document.getElementById('add-task-input');
-  const saveTaskContainer = document.querySelector('#saved-tasks');
-  saveTaskContainer.innerText= inputTask.value;
-  inputTask.value='';
-});
+   addTaskButton.addEventListener('click', function () {
+    if (inputTask.value.trim() !== ''){
+     createList(inputTask.value);
+     inputTask.value = '';
+   }
+   });
